@@ -1,4 +1,4 @@
-name: Leaflet Routing Machine / GraphHopper
+name: TPP Leaflet Routing Machine / Valhalla
 markdown: kramdown
-pygments: true
-baseurl: /lrm-graphhopper
+rouge: true
+baseurl: /tpp-lrm-valhalla
