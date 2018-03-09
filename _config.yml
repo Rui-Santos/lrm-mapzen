@@ -1,4 +1,4 @@
 name: Leaflet Routing Machine / GraphHopper
-markdown: redcarpet
+markdown: kramdown
 pygments: true
 baseurl: /lrm-graphhopper
