@@ -85,7 +85,7 @@
     },
 
     getIconName: function(instr, i) {
-      // you can find all Valhalla's direction types at https://github.com/valhalla/odin/blob/master/proto/tripdirections.proto
+      // you can find all Valhalla's direction types at https://github.com/valhalla/valhalla/blob/master/proto/tripdirections.proto
       switch (instr.type) {
         case 0:
           return 'kNone';
@@ -147,7 +147,7 @@
           return 'kFerryEnter';
         case 29:
           return 'kFerryExit';
-        // lrm-mapzen unifies transit commands and give them same icons
+        // lrm-valhalla unifies transit commands and give them same icons
         case 30:
         case 31: //'kTransitTransfer'
         case 32: //'kTransitRemainOn'
