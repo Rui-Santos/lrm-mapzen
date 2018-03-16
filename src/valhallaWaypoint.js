@@ -5,8 +5,8 @@
 
   module.exports = L.Class.extend({
     options: {
-    // lrm-mapzen passes these options of locations to the request call
-    // to see more options https://mapzen.com/documentation/mobility/turn-by-turn/api-reference/#locations
+    // lrm-valhalla passes these options of locations to the request call
+    // to see more options https://github.com/valhalla/valhalla-docs/blob/master/turn-by-turn/api-reference.md#locations
       type: null, // 'break' or 'through'. If no type is provided, the type is assumed to be a break.
       name: null,
       haeding: null,
