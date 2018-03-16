@@ -1,37 +1,37 @@
 var L = require('leaflet');
-var MapzenRouter = require('./mapzenRouter');
-var MapzenLine = require('./mapzenLine');
-var MapzenFormatter = require('./mapzenFormatter');
-var MapzenWaypoint = require('./mapzenWaypoint');
+var ValhallaRouter = require('./valhallaRouter');
+var ValhallaLine = require('./valhallaLine');
+var ValhallaFormatter = require('./valhallaFormatter');
+var ValhallaWaypoint = require('./valhallaWaypoint');
 
 L.Routing = L.Routing || {};
 L.routing = L.routing || {};
 
-L.Routing.Mapzen = MapzenRouter;
-L.Routing.MapzenLine = MapzenLine;
-L.Routing.MapzenFormatter = MapzenFormatter;
-L.Routing.MapzenWaypoint = MapzenWaypoint;
+L.Routing.Valhalla = ValhallaRouter;
+L.Routing.ValhallaLine = ValhallaLine;
+L.Routing.ValhallaFormatter = ValhallaFormatter;
+L.Routing.ValhallaWaypoint = ValhallaWaypoint;
 
 
-L.routing.mapzen = function(key, options) {
-  return new MapzenRouter(key, options);
+L.routing.valhalla = function(key, options) {
+  return new ValhallaRouter(key, options);
 }
 
-L.routing.mapzenLine = function(route, options) {
-  return new MapzenLine(route, options);
+L.routing.valhallaLine = function(route, options) {
+  return new ValhallaLine(route, options);
 }
 
-L.routing.mapzenFormatter = function(options) {
-  return new MapzenFormatter(options);
+L.routing.valhallaFormatter = function(options) {
+  return new ValhallaFormatter(options);
 }
 
-L.routing.mapzenWaypoint = function(latLng, name, options) {
-  return new MapzenWaypoint(latLng, name, options);
+L.routing.valhallaWaypoint = function(latLng, name, options) {
+  return new ValhallaWaypoint(latLng, name, options);
 }
 
 // deperecate these parts later
 
-L.Routing.mapzen = L.routing.mapzen;
-L.Routing.mapzenLine = L.routing.mapzenLine;
-L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
-L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
+L.Routing.valhalla = L.routing.valhalla;
+L.Routing.valhallaLine = L.routing.valhallaLine;
+L.Routing.valhallaFormatter = L.routing.valhallaFormatter;
+L.Routing.valhallaWaypoint = L.routing.valhallaWaypoint;
