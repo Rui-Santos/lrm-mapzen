@@ -5,11 +5,11 @@
   var corslite = require('@mapbox/corslite');
   var polyline = require('@mapbox/polyline');
 
-  var Waypoint = require('./mapzenWaypoint');
+  var Waypoint = require('./valhallaWaypoint');
 
   module.exports = L.Class.extend({
     options: {
-      serviceUrl: 'https://valhalla.mapzen.com/route?',
+      serviceUrl: 'https://valhalla.tppgeo.cf/route?',
       timeout: 30 * 1000
     },
 
@@ -17,22 +17,13 @@
       L.Util.setOptions(this, options);
       // There is currently no way to differentiate the options for Leaflet Routing Machine itself from options for route call
       // So we resort the options here
-      // In future, lrm-mapzen will consider exposing routingOptions object to users
+      // In future, lrm-valhalla will consider exposing routingOptions object to users
       this.options.routingOptions = {};
       for (var key in options) {
         if (key !== 'serviceUrl' || key !== 'timeout') {
           this.options.routingOptions[key] = options[key];
         }
       }
-
-      // Deprecation warnings for Mapzen hosted service.
-      // Make sure people aware of Mapzen hosted services are going down.
-      var mapzenHostedServiceUrl = '//valhalla.mapzen.com';
-      if (this.options.serviceUrl.indexOf(mapzenHostedServiceUrl) > -1) {
-        console.warn('Mapzen is shutting down its services including Turn-by-turn. Read more at https://mapzen.com/blog/shutdown');
-      }
-
-      this._accessToken = accessToken;
     },
 
     route: function(waypoints, callback, context, options) {
@@ -140,8 +131,8 @@
       callback.call(context, null, alts);
     },
 
-    // lrm mapzen is trying to unify manuver of subroutes,
-    // travle type number including transit routing is > 30 including entering the station, exiting the station
+    // lrm-valhalla is trying to unify maneuver of subroutes,
+    // travel type number including transit routing is > 30 including entering the station, exiting the station
     // look at the api docs for more info (docs link coming soon)
     _unifyTransitManeuver: function(insts) {
 
@@ -275,8 +266,7 @@
       var paramsToPass = L.extend(options, { locations: locs });
       var params = JSON.stringify(paramsToPass);
 
-      return this.options.serviceUrl + 'json=' +
-              params + '&api_key=' + this._accessToken;
+      return this.options.serviceUrl + 'json=' + params;
     },
 
     _locationKey: function(location) {
