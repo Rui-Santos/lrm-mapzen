@@ -12,7 +12,7 @@
     "routing",
     "valhalla",
     "turn by turn",
-    "mapzen"
+    "tpp"
   ],
   "contributors": [
     {
@@ -24,11 +24,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rui-Santos/lrm-valhalla.git"
+    "url": "https://github.com/Rui-Santos/tpp-lrm-valhalla.git"
   },
-  "homepage": "https://github.com/Rui-Santos/lrm-valhalla",
+  "homepage": "https://github.com/Rui-Santos/tpp-lrm-valhalla",
   "bugs": {
-    "url": "https://github.com/Rui-Santos/lrm-valhalla/issues"
+    "url": "https://github.com/Rui-Santos/tpp-lrm-valhalla/issues"
   },
   "dependencies": {
     "@mapbox/polyline": "0.2.0",
