@@ -1,7 +1,7 @@
 {
-  "name": "lrm-mapzen",
+  "name": "lrm-valhalla",
   "version": "1.3.5",
-  "description": "Support for Turn By Turn by Mapzen in Leaflet Machine",
+  "description": "Support for Turn By Turn by Valhalla in Leaflet Machine",
   "main": "src/index.js",
   "scripts": {
     "dist": "./scripts/dist.sh",
@@ -24,11 +24,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mapzen/lrm-mapzen.git"
+    "url": "https://github.com/Rui-Santos/lrm-valhalla.git"
   },
-  "homepage": "https://github.com/mapzen/lrm-mapzen",
+  "homepage": "https://github.com/Rui-Santos/lrm-valhalla",
   "bugs": {
-    "url": "https://github.com/mapzen/lrm-mapzen/issues"
+    "url": "https://github.com/Rui-Santos/lrm-valhalla/issues"
   },
   "dependencies": {
     "@mapbox/polyline": "0.2.0",
