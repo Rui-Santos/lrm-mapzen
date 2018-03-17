@@ -1,5 +1,5 @@
 {
-  "name": "lrm-valhalla",
+  "name": "tpp-lrm-valhalla",
   "version": "1.3.5",
   "description": "Support for Turn By Turn by Valhalla in Leaflet Machine",
   "main": "src/index.js",
@@ -20,7 +20,7 @@
       "github": "https://github.com/kdiluca"
     }
   ],
-  "author": "Hanbyul Jo <hanbyul@mapzen.com>",
+  "author": "Rui J Santos <rui.s@gmx.pt>",
   "license": "MIT",
   "repository": {
     "type": "git",
