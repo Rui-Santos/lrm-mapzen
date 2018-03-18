@@ -15,7 +15,7 @@ var control = L.Routing.control({
   reverseWaypoints: true,
   router: L.Routing.mapzen('valhalla-PVA4Y8g', {
     costing: 'auto',
-    serviceUrl: 'https://matrix.mapzen.com/optimized_route?'
+    serviceUrl: 'https://valhalla.tppgeo.cf/optimized_route?'
   }),
   formatter: new L.Routing.mapzenFormatter(),
   summaryTemplate:'<div class="route-info {costing}">{distance}, {time}</div>'

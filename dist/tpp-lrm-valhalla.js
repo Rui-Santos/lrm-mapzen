@@ -258,44 +258,45 @@ if (typeof module === 'object' && module.exports) {
 },{}],3:[function(require,module,exports){
 (function (global){
 var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
-var MapzenRouter = require('./mapzenRouter');
-var MapzenLine = require('./mapzenLine');
-var MapzenFormatter = require('./mapzenFormatter');
-var MapzenWaypoint = require('./mapzenWaypoint');
+var ValhallaRouter = require('./valhallaRouter');
+var ValhallaLine = require('./valhallaLine');
+var ValhallaFormatter = require('./valhallaFormatter');
+var ValhallaWaypoint = require('./valhallaWaypoint');
 
 L.Routing = L.Routing || {};
 L.routing = L.routing || {};
 
-L.Routing.Mapzen = MapzenRouter;
-L.Routing.MapzenLine = MapzenLine;
-L.Routing.MapzenFormatter = MapzenFormatter;
-L.Routing.MapzenWaypoint = MapzenWaypoint;
+L.Routing.Valhalla = ValhallaRouter;
+L.Routing.ValhallaLine = ValhallaLine;
+L.Routing.ValhallaFormatter = ValhallaFormatter;
+L.Routing.ValhallaWaypoint = ValhallaWaypoint;
 
 
-L.routing.mapzen = function(key, options) {
-  return new MapzenRouter(key, options);
+L.routing.valhalla = function(key, options) {
+  return new ValhallaRouter(key, options);
 }
 
-L.routing.mapzenLine = function(route, options) {
-  return new MapzenLine(route, options);
+L.routing.valhallaLine = function(route, options) {
+  return new ValhallaLine(route, options);
 }
 
-L.routing.mapzenFormatter = function(options) {
-  return new MapzenFormatter(options);
+L.routing.valhallaFormatter = function(options) {
+  return new ValhallaFormatter(options);
 }
 
-L.routing.mapzenWaypoint = function(latLng, name, options) {
-  return new MapzenWaypoint(latLng, name, options);
+L.routing.valhallaWaypoint = function(latLng, name, options) {
+  return new ValhallaWaypoint(latLng, name, options);
 }
 
 // deperecate these parts later
 
-L.Routing.mapzen = L.routing.mapzen;
-L.Routing.mapzenLine = L.routing.mapzenLine;
-L.Routing.mapzenFormatter = L.routing.mapzenFormatter;
-L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
+L.Routing.valhalla = L.routing.valhalla;
+L.Routing.valhallaLine = L.routing.valhallaLine;
+L.Routing.valhallaFormatter = L.routing.valhallaFormatter;
+L.Routing.valhallaWaypoint = L.routing.valhallaWaypoint;
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./mapzenFormatter":4,"./mapzenLine":5,"./mapzenRouter":6,"./mapzenWaypoint":7}],4:[function(require,module,exports){
+},{"./valhallaFormatter":4,"./valhallaLine":5,"./valhallaRouter":6,"./valhallaWaypoint":7}],4:[function(require,module,exports){
 (function (global){
 (function() {
   'use strict';
@@ -384,7 +385,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
     },
 
     getIconName: function(instr, i) {
-      // you can find all Valhalla's direction types at https://github.com/valhalla/odin/blob/master/proto/tripdirections.proto
+      // you can find all Valhalla's direction types at https://github.com/valhalla/valhalla/blob/master/proto/tripdirections.proto
       switch (instr.type) {
         case 0:
           return 'kNone';
@@ -446,7 +447,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
           return 'kFerryEnter';
         case 29:
           return 'kFerryExit';
-        // lrm-mapzen unifies transit commands and give them same icons
+        // lrm-valhalla unifies transit commands and give them same icons
         case 30:
         case 31: //'kTransitTransfer'
         case 32: //'kTransitRemainOn'
@@ -468,153 +469,154 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
   });
 
 })();
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],5:[function(require,module,exports){
 (function (global){
 (function() {
-	'use strict';
+  'use strict';
 
-	var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
+  var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
 
-	module.exports = L.LayerGroup.extend({
-	  // L.Evented is only present in Leaflet v1+
-	  // L.Mixin.Events is legacy; was deprecated in Leaflet v1 and started
-	  // logging deprecation warnings in console in v1.1
-	  includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
+  module.exports = L.LayerGroup.extend({
+    // L.Evented is only present in Leaflet v1+
+    // L.Mixin.Events is legacy; was deprecated in Leaflet v1 and started
+    // logging deprecation warnings in console in v1.1
+    includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
 
-		options: {
-			styles: [
-				{color: 'white', opacity: 0.8, weight: 8},
-				{color: '#06a6d4', opacity: 1, weight: 6}
-			],
-			missingRouteStyles: [
-				{color: 'black', opacity: 0.15, weight: 8},
-				{color: 'white', opacity: 0.6, weight: 6},
-				{color: 'gray', opacity: 0.8, weight: 4, dashArray: '7,12'}
-			],
-			addWaypoints: true,
-			extendToWaypoints: true,
-			missingRouteTolerance: 10
-		},
+    options: {
+      styles: [
+        {color: 'white', opacity: 0.8, weight: 8},
+        {color: '#06a6d4', opacity: 1, weight: 6}
+      ],
+      missingRouteStyles: [
+        {color: 'black', opacity: 0.15, weight: 8},
+        {color: 'white', opacity: 0.6, weight: 6},
+        {color: 'gray', opacity: 0.8, weight: 4, dashArray: '7,12'}
+      ],
+      addWaypoints: true,
+      extendToWaypoints: true,
+      missingRouteTolerance: 10
+    },
 
-		initialize: function(route, options) {
-			L.setOptions(this, options);
-			L.LayerGroup.prototype.initialize.call(this, options);
-			this._route = route;
+    initialize: function(route, options) {
+      L.setOptions(this, options);
+      L.LayerGroup.prototype.initialize.call(this, options);
+      this._route = route;
 
-			if (this.options.extendToWaypoints) {
-				this._extendToWaypoints();
-			}
+      if (this.options.extendToWaypoints) {
+        this._extendToWaypoints();
+      }
 
-			if (route.subRoutes) {
-				for(var i = 0; i < route.subRoutes.length; i++) {
-					if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
-					this._addSegment(
-						route.subRoutes[i].coordinates,
-						route.subRoutes[i].styles,
-						this.options.addWaypoints);
-				}
-			} else {
-			 this._addSegment(
-			 	route.coordinates,
-			 	this.options.styles,
-			 	this.options.addWaypoints);
-			}
-		},
+      if (route.subRoutes) {
+        for(var i = 0; i < route.subRoutes.length; i++) {
+          if(!route.subRoutes[i].styles) route.subRoutes[i].styles = this.options.styles;
+          this._addSegment(
+            route.subRoutes[i].coordinates,
+            route.subRoutes[i].styles,
+            this.options.addWaypoints);
+        }
+      } else {
+       this._addSegment(
+        route.coordinates,
+        this.options.styles,
+        this.options.addWaypoints);
+      }
+    },
 
-		addTo: function(map) {
-			map.addLayer(this);
-			return this;
-		},
-		getBounds: function() {
-			return L.latLngBounds(this._route.coordinates);
-		},
+    addTo: function(map) {
+      map.addLayer(this);
+      return this;
+    },
+    getBounds: function() {
+      return L.latLngBounds(this._route.coordinates);
+    },
 
-		_findWaypointIndices: function() {
-			var wps = this._route.inputWaypoints,
-			    indices = [],
-			    i;
-			for (i = 0; i < wps.length; i++) {
-				indices.push(this._findClosestRoutePoint(wps[i].latLng));
-			}
+    _findWaypointIndices: function() {
+      var wps = this._route.inputWaypoints,
+          indices = [],
+          i;
+      for (i = 0; i < wps.length; i++) {
+        indices.push(this._findClosestRoutePoint(wps[i].latLng));
+      }
 
-			return indices;
-		},
+      return indices;
+    },
 
-		_findClosestRoutePoint: function(latlng) {
-			var minDist = Number.MAX_VALUE,
-				minIndex,
-			    i,
-			    d;
+    _findClosestRoutePoint: function(latlng) {
+      var minDist = Number.MAX_VALUE,
+        minIndex,
+          i,
+          d;
 
-			for (i = this._route.coordinates.length - 1; i >= 0 ; i--) {
-				// TODO: maybe do this in pixel space instead?
-				d = latlng.distanceTo(this._route.coordinates[i]);
-				if (d < minDist) {
-					minIndex = i;
-					minDist = d;
-				}
-			}
+      for (i = this._route.coordinates.length - 1; i >= 0 ; i--) {
+        // TODO: maybe do this in pixel space instead?
+        d = latlng.distanceTo(this._route.coordinates[i]);
+        if (d < minDist) {
+          minIndex = i;
+          minDist = d;
+        }
+      }
 
-			return minIndex;
-		},
+      return minIndex;
+    },
 
-		_extendToWaypoints: function() {
-			var wps = this._route.inputWaypoints,
-				wpIndices = this._getWaypointIndices(),
-			    i,
-			    wpLatLng,
-			    routeCoord;
+    _extendToWaypoints: function() {
+      var wps = this._route.inputWaypoints,
+        wpIndices = this._getWaypointIndices(),
+          i,
+          wpLatLng,
+          routeCoord;
 
-			for (i = 0; i < wps.length; i++) {
-				wpLatLng = wps[i].latLng;
-				routeCoord = L.latLng(this._route.coordinates[wpIndices[i]]);
-				if (wpLatLng.distanceTo(routeCoord) >
-					this.options.missingRouteTolerance) {
-					this._addSegment([wpLatLng, routeCoord],
-						this.options.missingRouteStyles);
-				}
-			}
-		},
+      for (i = 0; i < wps.length; i++) {
+        wpLatLng = wps[i].latLng;
+        routeCoord = L.latLng(this._route.coordinates[wpIndices[i]]);
+        if (wpLatLng.distanceTo(routeCoord) >
+          this.options.missingRouteTolerance) {
+          this._addSegment([wpLatLng, routeCoord],
+            this.options.missingRouteStyles);
+        }
+      }
+    },
 
-		_addSegment: function(coords, styles, mouselistener) {
-			var i,
-				pl;
-			for (i = 0; i < styles.length; i++) {
-				pl = L.polyline(coords, styles[i]);
-				this.addLayer(pl);
-				if (mouselistener) {
-					pl.on('mousedown', this._onLineTouched, this);
-				}
-			}
-		},
+    _addSegment: function(coords, styles, mouselistener) {
+      var i,
+        pl;
+      for (i = 0; i < styles.length; i++) {
+        pl = L.polyline(coords, styles[i]);
+        this.addLayer(pl);
+        if (mouselistener) {
+          pl.on('mousedown', this._onLineTouched, this);
+        }
+      }
+    },
 
-		_findNearestWpBefore: function(i) {
-			var wpIndices = this._getWaypointIndices(),
-				j = wpIndices.length - 1;
-			while (j >= 0 && wpIndices[j] > i) {
-				j--;
-			}
+    _findNearestWpBefore: function(i) {
+      var wpIndices = this._getWaypointIndices(),
+        j = wpIndices.length - 1;
+      while (j >= 0 && wpIndices[j] > i) {
+        j--;
+      }
 
-			return j;
-		},
+      return j;
+    },
 
-		_onLineTouched: function(e) {
-			var afterIndex = this._findNearestWpBefore(this._findClosestRoutePoint(e.latlng));
-			this.fire('linetouched', {
-				afterIndex: afterIndex,
-				latlng: e.latlng
-			});
-		},
+    _onLineTouched: function(e) {
+      var afterIndex = this._findNearestWpBefore(this._findClosestRoutePoint(e.latlng));
+      this.fire('linetouched', {
+        afterIndex: afterIndex,
+        latlng: e.latlng
+      });
+    },
 
-		_getWaypointIndices: function() {
-			if (!this._wpIndices) {
-				this._wpIndices = this._route.waypointIndices || this._findWaypointIndices();
-			}
+    _getWaypointIndices: function() {
+      if (!this._wpIndices) {
+        this._wpIndices = this._route.waypointIndices || this._findWaypointIndices();
+      }
 
-			return this._wpIndices;
-		}
-	});
+      return this._wpIndices;
+    }
+  });
 
 })();
 
@@ -628,11 +630,11 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
   var corslite = require('@mapbox/corslite');
   var polyline = require('@mapbox/polyline');
 
-  var Waypoint = require('./mapzenWaypoint');
+  var Waypoint = require('./valhallaWaypoint');
 
   module.exports = L.Class.extend({
     options: {
-      serviceUrl: 'https://valhalla.mapzen.com/route?',
+      serviceUrl: 'https://valhalla.tppgeo.cf/route?',
       timeout: 30 * 1000
     },
 
@@ -640,14 +642,13 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
       L.Util.setOptions(this, options);
       // There is currently no way to differentiate the options for Leaflet Routing Machine itself from options for route call
       // So we resort the options here
-      // In future, lrm-mapzen will consider exposing routingOptions object to users
+      // In future, lrm-valhalla will consider exposing routingOptions object to users
       this.options.routingOptions = {};
       for (var key in options) {
         if (key !== 'serviceUrl' || key !== 'timeout') {
           this.options.routingOptions[key] = options[key];
         }
       }
-      this._accessToken = accessToken;
     },
 
     route: function(waypoints, callback, context, options) {
@@ -755,8 +756,8 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
       callback.call(context, null, alts);
     },
 
-    // lrm mapzen is trying to unify manuver of subroutes,
-    // travle type number including transit routing is > 30 including entering the station, exiting the station
+    // lrm-valhalla is trying to unify maneuver of subroutes,
+    // travel type number including transit routing is > 30 including entering the station, exiting the station
     // look at the api docs for more info (docs link coming soon)
     _unifyTransitManeuver: function(insts) {
 
@@ -890,8 +891,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
       var paramsToPass = L.extend(options, { locations: locs });
       var params = JSON.stringify(paramsToPass);
 
-      return this.options.serviceUrl + 'json=' +
-              params + '&api_key=' + this._accessToken;
+      return this.options.serviceUrl + 'json=' + params;
     },
 
     _locationKey: function(location) {
@@ -954,7 +954,7 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
 })();
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./mapzenWaypoint":7,"@mapbox/corslite":1,"@mapbox/polyline":2}],7:[function(require,module,exports){
+},{"./valhallaWaypoint":7,"@mapbox/corslite":1,"@mapbox/polyline":2}],7:[function(require,module,exports){
 (function (global){
 (function() {
   'use strict';
@@ -963,8 +963,8 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
 
   module.exports = L.Class.extend({
     options: {
-    // lrm-mapzen passes these options of locations to the request call
-    // to see more options https://mapzen.com/documentation/mobility/turn-by-turn/api-reference/#locations
+    // lrm-valhalla passes these options of locations to the request call
+    // to see more options https://github.com/valhalla/valhalla-docs/blob/master/turn-by-turn/api-reference.md#locations
       type: null, // 'break' or 'through'. If no type is provided, the type is assumed to be a break.
       name: null,
       haeding: null,
@@ -981,5 +981,6 @@ L.Routing.mapzenWaypoint = L.routing.mapzenWaypoint;
     }
   });
 })();
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[3,4,5,6,7]);
