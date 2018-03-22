@@ -9,7 +9,7 @@
 
   module.exports = L.Class.extend({
     options: {
-      serviceUrl: 'https://valhalla.tppgeo.cf/route?',
+      serviceUrl: 'https://routing.tpp.pt/route?',
       timeout: 30 * 1000
     },
 
@@ -249,16 +249,46 @@
       return wps;
     },
 
-    buildRouteUrl: function(waypoints, options) {
-      var locs = [];
+    buildRouteUrl: function(waypoints, options, optimized_route) {
+      var locs = [],
+          locationKey,
+          hint;
 
       for (var i = 0; i < waypoints.length; i++) {
-        var loc = {
-          lat: waypoints[i].latLng.lat,
-          lon: waypoints[i].latLng.lng,
-        }
-        for (var key in waypoints[i].options) {
-          if (waypoints[i].options[key]) loc[key] = waypoints[i].options[key];
+        var loc;
+        locationKey = this._locationKey(waypoints[i].latLng).split(',');
+        if (!optimized_route) {
+          if(i === 0 || i === waypoints.length-1){
+            loc = {
+              lat: parseFloat(locationKey[0]),
+              lon: parseFloat(locationKey[1]),
+              type: "break",
+              name: waypoints[i].name,
+              street: waypoints[i].street,
+              city: waypoints[i].city,
+              state: waypoints[i].state
+            }
+          }else{
+            loc = {
+              lat: parseFloat(locationKey[0]),
+              lon: parseFloat(locationKey[1]),
+              type: "through",
+              name: waypoints[i].name,
+              street: waypoints[i].street,
+              city: waypoints[i].city,
+              state: waypoints[i].state
+            }
+          }
+        } else {
+          loc = {
+              lat: parseFloat(locationKey[0]),
+              lon: parseFloat(locationKey[1]),
+              type: "break",
+              name: waypoints[i].name,
+              street: waypoints[i].street,
+              city: waypoints[i].city,
+              state: waypoints[i].state
+            }
         }
         locs.push(loc);
       }
